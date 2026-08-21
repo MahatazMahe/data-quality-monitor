@@ -147,10 +147,15 @@ data-quality-monitor/
 
 Running Locally
 1. Clone the repository
+
 git clone https://github.com/MahatazMahe/data-quality-monitor.git
+
 cd data-quality-monitor
+
 2. Create a virtual environment
+
 python -m venv .venv
+
 3. Activate the virtual environment
 
 Windows PowerShell:
