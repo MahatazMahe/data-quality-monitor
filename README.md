@@ -1,120 +1,135 @@
 # Data Quality Monitoring Dashboard
 
-An interactive data quality monitoring system built with Python, SQLite, Pandas, Plotly, and Streamlit.
+An interactive data quality monitoring system that validates a customer dataset, calculates quality metrics, tracks results over time, and surfaces everything through a Streamlit dashboard.
 
-## Live Dashboard
+Built with **Python, Pandas, SQLite, Plotly, and Streamlit**.
 
-**Coming soon**
+---
 
 ## Overview
 
-This project simulates a production-style data quality monitoring workflow for a customer dataset.
+Most data pipelines fail quietly — a missing field here, a duplicate record there — and by the time it shows up in a report, it's hard to trace back to the source. This project simulates a production-style data quality workflow to address that: it loads raw customer data, runs it through a set of validation rules, scores it across multiple quality dimensions, and stores every run so quality can be tracked over time rather than checked once and forgotten.
 
-The system loads raw customer data, validates it against data quality rules, calculates quality metrics, stores historical pipeline results in SQLite, and exposes the results through an interactive monitoring dashboard.
+**Pipeline flow:**
 
-## Architecture
-
-```text
+```
 Raw Customer CSV
-       ↓
-Python Data Quality Pipeline
-       ↓
+      ↓
+Data Quality Pipeline (Python)
+      ↓
 Validation & Quality Checks
-       ↓
+      ↓
 Quality Metrics
-       ↓
+      ↓
 SQLite Database
-       ↓
-Interactive Streamlit Dashboard
+      ↓
+Streamlit Dashboard
+```
 
-Quality Dimensions
+---
 
-The pipeline evaluates four core data quality dimensions:
+## Quality Dimensions
 
-Completeness — measures missing data
-Validity — identifies invalid values and formats
-Uniqueness — detects duplicate records and customer IDs
-Consistency — identifies inconsistent categorical values
-Dashboard Features
-Overall data quality score
-Quality dimension analysis
-Historical quality monitoring
-Issue severity visualization
-Column-level completeness analysis
-Interactive quality run selection
-Severity filtering
-Column filtering
-Issue search
-Dataset preview
-Filtered issue export
-Historical pipeline results
-Data Quality Checks
+The pipeline evaluates data across four core dimensions:
 
-The pipeline detects:
+| Dimension | What it measures |
+|---|---|
+| **Completeness** | Missing data across required fields |
+| **Validity** | Invalid values and malformed formats |
+| **Uniqueness** | Duplicate records and duplicate customer IDs |
+| **Consistency** | Inconsistent categorical values (e.g. country names) |
 
-Missing values
-Missing emails
-Missing phone numbers
-Missing income
-Duplicate records
-Duplicate customer IDs
-Invalid email addresses
-Invalid ages
-Invalid dates
-Inconsistent country names
-Current Dataset
+---
 
-The project uses synthetic customer data containing:
+## What It Checks
 
-Field	Description
-customer_id	Unique customer identifier
-first_name	Customer first name
-last_name	Customer last name
-email	Customer email
-phone	Customer phone number
-country	Customer country
-signup_date	Customer registration date
-age	Customer age
-annual_income	Annual customer income
-customer_status	Customer account status
+- Missing values (overall, plus email / phone / income specifically)
+- Duplicate records and duplicate customer IDs
+- Invalid email addresses
+- Invalid ages
+- Invalid dates
+- Inconsistent country naming
 
-The dataset intentionally contains controlled data quality problems so that the monitoring pipeline has realistic issues to detect.
+---
 
-Example Pipeline Results
+## Dashboard Features
 
-Current pipeline results:
+- Overall data quality score
+- Per-dimension quality breakdown
+- Historical quality tracking across pipeline runs
+- Issue severity visualization
+- Column-level completeness analysis
+- Run selection, severity filtering, and column filtering
+- Issue search
+- Dataset preview
+- Filtered issue export
 
-Metric	Score
-Overall Quality	98.91%
-Completeness	99.68%
-Validity	97.65%
-Uniqueness	99.21%
-Consistency	99.35%
+---
 
-Detected issues:
+## Dataset
 
-Issue	Count
-Missing Values	402
-Missing Email	182
-Missing Phone	120
-Invalid Email	103
-Missing Income	100
-Duplicate Customer ID	100
-Duplicate Rows	100
-Inconsistent Country	82
-Invalid Age	61
-Invalid Date	50
-Technology Stack
-Python
-Pandas
-SQLite
-Plotly
-Streamlit
-Git
-GitHub
+The pipeline runs against a synthetic customer dataset with the following fields:
 
-Project Structure:
+| Field | Description |
+|---|---|
+| `customer_id` | Unique customer identifier |
+| `first_name` | Customer first name |
+| `last_name` | Customer last name |
+| `email` | Customer email |
+| `phone` | Customer phone number |
+| `country` | Customer country |
+| `signup_date` | Customer registration date |
+| `age` | Customer age |
+| `annual_income` | Annual customer income |
+| `customer_status` | Customer account status |
 
+The dataset intentionally includes controlled data quality issues so the pipeline has realistic problems to detect and score.
+
+---
+
+## Example Pipeline Results
+
+**Quality scores:**
+
+| Metric | Score |
+|---|---|
+| Overall Quality | 98.91% |
+| Completeness | 99.68% |
+| Validity | 97.65% |
+| Uniqueness | 99.21% |
+| Consistency | 99.35% |
+
+**Issues detected:**
+
+| Issue | Count |
+|---|---|
+| Missing Values | 402 |
+| Missing Email | 182 |
+| Missing Phone | 120 |
+| Invalid Email | 103 |
+| Missing Income | 100 |
+| Duplicate Customer ID | 100 |
+| Duplicate Rows | 100 |
+| Inconsistent Country | 82 |
+| Invalid Age | 61 |
+| Invalid Date | 50 |
+
+---
+
+## Tech Stack
+
+- **Python** — pipeline and validation logic
+- **Pandas** — data processing
+- **SQLite** — persistence of quality runs and issues
+- **Plotly** — visualizations
+- **Streamlit** — dashboard interface
+- **Git / GitHub** — version control
+
+---
+
+## Project Structure
+
+```
 data-quality-monitor/
 │
 ├── dashboard/
@@ -144,70 +159,97 @@ data-quality-monitor/
 ├── requirements.txt
 ├── .gitignore
 └── README.md
+```
 
-Running Locally
-1. Clone the repository
+---
 
+## Running Locally
+
+**1. Clone the repository**
+
+```bash
 git clone https://github.com/MahatazMahe/data-quality-monitor.git
-
 cd data-quality-monitor
+```
 
-2. Create a virtual environment
+**2. Create a virtual environment**
 
+```bash
 python -m venv .venv
+```
 
-3. Activate the virtual environment
+**3. Activate the virtual environment**
 
-Windows PowerShell:
+Windows (PowerShell):
 
+```bash
 .venv\Scripts\Activate.ps1
-4. Install dependencies
+```
+
+**4. Install dependencies**
+
+```bash
 pip install -r requirements.txt
-5. Run the data quality pipeline
+```
+
+**5. Run the data quality pipeline**
+
+```bash
 python pipeline.py
-6. Launch the dashboard
+```
+
+**6. Launch the dashboard**
+
+```bash
 streamlit run dashboard/app.py
+```
 
-The dashboard will be available at:
+The dashboard will be available at `http://localhost:8501`.
 
-http://localhost:8501
+---
 
-Data Pipeline
+## Data Pipeline
 
-The pipeline follows this workflow:
-
+```
 Customer Dataset
-       ↓
+      ↓
 Load Data
-       ↓
+      ↓
 Run Validation Rules
-       ↓
+      ↓
 Calculate Quality Metrics
-       ↓
+      ↓
 Calculate Overall Score
-       ↓
+      ↓
 Store Results in SQLite
-       ↓
+      ↓
 Record Quality Issues
-       ↓
+      ↓
 Dashboard
+```
 
-Each pipeline execution is recorded as a separate quality run, allowing historical monitoring of data quality.
+Each pipeline execution is stored as a distinct quality run, which is what enables historical tracking rather than a single point-in-time check.
 
-Purpose
+---
 
-This project was built as a practical Data Engineering portfolio project to demonstrate:
+## Purpose
 
-Data validation
-Data quality monitoring
-Python data processing
-SQL database persistence
-Quality metric calculation
-Interactive data visualization
-Pipeline development
-Dashboard development
-Git and GitHub workflow
-Author
+This was built as a Data Engineering portfolio project to get hands-on practice with the full lifecycle of a data quality workflow — not just writing validation rules, but structuring a pipeline, persisting results in a queryable form, and turning raw checks into metrics that are actually usable for monitoring over time. It covers:
 
-Mahataz Mahe
+- Data validation
+- Data quality monitoring
+- Python data processing
+- SQL-based persistence
+- Quality metric calculation
+- Interactive data visualization
+- Pipeline development
+- Dashboard development
+- Git/GitHub workflow
+
+---
+
+## Author
+
+**Mahataz Mahe**
+CS/CSE undergraduate building toward a career in Data Engineering.
 Data Engineering Portfolio Project
