@@ -21,79 +21,200 @@ st.set_page_config(
 )
 
 
+# ---------------------------------------------------------------------------
+# Theme: dark mode + purple accent palette
+# ---------------------------------------------------------------------------
+BG_DEEP = "#0e0b1a"        # app background
+BG_PANEL = "#171225"       # cards / sidebar background
+BG_PANEL_ALT = "#1e1832"   # slightly lighter panel (hover / inputs)
+BORDER = "#332a52"         # subtle borders
+TEXT_PRIMARY = "#f1eefb"   # near-white with a violet tint
+TEXT_MUTED = "#a79fc4"     # muted lavender-grey
+
+ACCENT = "#a78bfa"         # primary purple (violet-400)
+ACCENT_STRONG = "#7c3aed"  # deeper purple (violet-600)
+ACCENT_SOFT = "#c4b5fd"    # light purple (violet-300)
+ACCENT_GLOW = "#8b5cf6"    # violet-500
+
+STATUS_GOOD_BG = "#15241f"
+STATUS_GOOD_FG = "#4ade80"
+STATUS_GOOD_BORDER = "#1f4d3a"
+
+STATUS_WARN_BG = "#2a2016"
+STATUS_WARN_FG = "#fbbf24"
+STATUS_WARN_BORDER = "#5a4420"
+
+STATUS_CRIT_BG = "#2a1620"
+STATUS_CRIT_FG = "#fb7185"
+STATUS_CRIT_BORDER = "#5a2035"
+
+# Purple sequence for charts (dark-friendly, light-to-deep violet)
+PURPLE_SEQUENCE = [
+    "#c4b5fd",
+    "#a78bfa",
+    "#8b5cf6",
+    "#7c3aed",
+    "#6d28d9",
+    "#5b21b6",
+]
+
+PLOTLY_TEMPLATE = "plotly_dark"
+
+
 st.markdown(
-    """
+    f"""
     <style>
 
-    .block-container {
+    /* ---------- App-wide dark background ---------- */
+    .stApp {{
+        background-color: {BG_DEEP};
+        color: {TEXT_PRIMARY};
+    }}
+
+    section[data-testid="stSidebar"] {{
+        background-color: {BG_PANEL};
+        border-right: 1px solid {BORDER};
+    }}
+
+    section[data-testid="stSidebar"] * {{
+        color: {TEXT_PRIMARY};
+    }}
+
+    .block-container {{
         padding-top: 2rem;
         padding-bottom: 3rem;
         max-width: 1450px;
-    }
+    }}
 
-    .main-title {
+    .main-title {{
         font-size: 2.2rem;
         font-weight: 700;
         letter-spacing: -0.03em;
         margin-bottom: 0.2rem;
-    }
+        background: linear-gradient(90deg, {ACCENT_SOFT}, {ACCENT_GLOW});
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }}
 
-    .subtitle {
-        color: #6b7280;
+    .subtitle {{
+        color: {TEXT_MUTED};
         font-size: 1rem;
         margin-bottom: 1.5rem;
-    }
+    }}
 
-    .section-title {
+    .section-title {{
         font-size: 1.15rem;
         font-weight: 650;
         margin-top: 1rem;
         margin-bottom: 0.8rem;
-    }
+        color: {TEXT_PRIMARY};
+        border-left: 3px solid {ACCENT};
+        padding-left: 0.6rem;
+    }}
 
-    .status-good {
-        background: #ecfdf5;
-        color: #047857;
-        border: 1px solid #a7f3d0;
+    .status-good {{
+        background: {STATUS_GOOD_BG};
+        color: {STATUS_GOOD_FG};
+        border: 1px solid {STATUS_GOOD_BORDER};
         padding: 0.35rem 0.7rem;
         border-radius: 999px;
         font-size: 0.8rem;
         font-weight: 600;
         display: inline-block;
-    }
+    }}
 
-    .status-warning {
-        background: #fffbeb;
-        color: #b45309;
-        border: 1px solid #fde68a;
+    .status-warning {{
+        background: {STATUS_WARN_BG};
+        color: {STATUS_WARN_FG};
+        border: 1px solid {STATUS_WARN_BORDER};
         padding: 0.35rem 0.7rem;
         border-radius: 999px;
         font-size: 0.8rem;
         font-weight: 600;
         display: inline-block;
-    }
+    }}
 
-    .status-critical {
-        background: #fef2f2;
-        color: #b91c1c;
-        border: 1px solid #fecaca;
+    .status-critical {{
+        background: {STATUS_CRIT_BG};
+        color: {STATUS_CRIT_FG};
+        border: 1px solid {STATUS_CRIT_BORDER};
         padding: 0.35rem 0.7rem;
         border-radius: 999px;
         font-size: 0.8rem;
         font-weight: 600;
         display: inline-block;
-    }
+    }}
 
-    [data-testid="stMetric"] {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
+    /* ---------- Metric cards ---------- */
+    [data-testid="stMetric"] {{
+        background: {BG_PANEL};
+        border: 1px solid {BORDER};
         padding: 1rem;
         border-radius: 12px;
-    }
+        box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.05);
+        transition: border-color 0.15s ease;
+    }}
 
-    [data-testid="stMetricValue"] {
+    [data-testid="stMetric"]:hover {{
+        border-color: {ACCENT};
+    }}
+
+    [data-testid="stMetricValue"] {{
         font-size: 1.8rem;
-    }
+        color: {TEXT_PRIMARY};
+    }}
+
+    [data-testid="stMetricLabel"] {{
+        color: {TEXT_MUTED};
+    }}
+
+    [data-testid="stMetricDelta"] svg {{
+        color: {ACCENT_SOFT};
+    }}
+
+    /* ---------- Misc widgets ---------- */
+    div[data-baseweb="select"] > div {{
+        background-color: {BG_PANEL_ALT};
+        border-color: {BORDER};
+        color: {TEXT_PRIMARY};
+    }}
+
+    .stTextInput input {{
+        background-color: {BG_PANEL_ALT};
+        color: {TEXT_PRIMARY};
+        border-color: {BORDER};
+    }}
+
+    .stDataFrame {{
+        border: 1px solid {BORDER};
+        border-radius: 8px;
+        overflow: hidden;
+    }}
+
+    .stDownloadButton button, .stButton button {{
+        background-color: {ACCENT_STRONG};
+        color: #ffffff;
+        border: 1px solid {ACCENT};
+        border-radius: 8px;
+    }}
+
+    .stDownloadButton button:hover, .stButton button:hover {{
+        background-color: {ACCENT_GLOW};
+        border-color: {ACCENT_SOFT};
+        color: #ffffff;
+    }}
+
+    hr {{
+        border-color: {BORDER};
+    }}
+
+    .streamlit-expanderHeader {{
+        background-color: {BG_PANEL};
+        border: 1px solid {BORDER};
+        border-radius: 8px;
+        color: {TEXT_PRIMARY};
+    }}
 
     </style>
     """,
@@ -408,6 +529,14 @@ trend_fig.add_trace(
         y=run_history["overall_score"],
         mode="lines+markers",
         name="Overall Quality",
+        line=dict(color=ACCENT_SOFT, width=3),
+        marker=dict(
+            color=ACCENT_GLOW,
+            size=8,
+            line=dict(color=ACCENT_SOFT, width=1),
+        ),
+        fill="tozeroy",
+        fillcolor="rgba(139, 92, 246, 0.12)",
         hovertemplate=(
             "Run %{x}<br>"
             "Quality: %{y:.2f}%"
@@ -419,10 +548,16 @@ trend_fig.add_trace(
 trend_fig.add_hline(
     y=95,
     line_dash="dash",
+    line_color="#fbbf24",
     annotation_text="95% threshold",
+    annotation_font_color="#fbbf24",
 )
 
 trend_fig.update_layout(
+    template=PLOTLY_TEMPLATE,
+    paper_bgcolor=BG_PANEL,
+    plot_bgcolor=BG_PANEL,
+    font=dict(color=TEXT_PRIMARY),
     height=360,
     margin=dict(
         l=20,
@@ -439,8 +574,10 @@ trend_fig.update_layout(
                 run_history["overall_score"].min() - 2,
             ),
             100,
-        ]
+        ],
+        gridcolor=BORDER,
     ),
+    xaxis=dict(gridcolor=BORDER),
     hovermode="x unified",
 )
 
@@ -473,6 +610,8 @@ with left:
         y="Score",
         text="Score",
         range_y=[90, 100],
+        color="Metric",
+        color_discrete_sequence=PURPLE_SEQUENCE,
     )
 
     dimension_fig.update_traces(
@@ -481,6 +620,10 @@ with left:
     )
 
     dimension_fig.update_layout(
+        template=PLOTLY_TEMPLATE,
+        paper_bgcolor=BG_PANEL,
+        plot_bgcolor=BG_PANEL,
+        font=dict(color=TEXT_PRIMARY),
         height=380,
         margin=dict(
             l=20,
@@ -490,6 +633,9 @@ with left:
         ),
         xaxis_title="",
         yaxis_title="Score (%)",
+        showlegend=False,
+        yaxis=dict(gridcolor=BORDER),
+        xaxis=dict(gridcolor=BORDER),
     )
 
     st.plotly_chart(
@@ -517,9 +663,18 @@ with right:
         names="severity",
         values="issue_count",
         hole=0.58,
+        color_discrete_sequence=PURPLE_SEQUENCE,
+    )
+
+    severity_fig.update_traces(
+        marker=dict(line=dict(color=BG_PANEL, width=2))
     )
 
     severity_fig.update_layout(
+        template=PLOTLY_TEMPLATE,
+        paper_bgcolor=BG_PANEL,
+        plot_bgcolor=BG_PANEL,
+        font=dict(color=TEXT_PRIMARY),
         height=380,
         margin=dict(
             l=20,
